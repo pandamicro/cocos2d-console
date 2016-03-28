@@ -265,3 +265,11 @@ class ExtendEnv(object):
             return cls.extend_env[key]
         else:
             return None
+
+    @classmethod
+    def get_extend_env_str(cls):
+        env_list = []
+        for item in cls.extend_env:
+            env_list.append("%s=%s" % (item, cls.extend_env[item]))
+
+        return ':'.join(env_list)
