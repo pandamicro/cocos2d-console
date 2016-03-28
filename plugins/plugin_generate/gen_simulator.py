@@ -295,6 +295,10 @@ class SimulatorCompiler(cocos.CCPlugin):
                 " && %s" % (lang_copy_command),
                 ])
 
+        env_param = utils.ExtendEnv.get_extend_env_str()
+        if env_param and len(env_param) > 0:
+            command += (' --env "%s"' % env_param)
+
         self._run_cmd(command, self.simulator_abs_path)
         self.build_log += MultiLanguage.get_string('GEN_SIM_BUILD_SUCCESS_FMT', ('Win32', self.mode))
 
@@ -310,6 +314,10 @@ class SimulatorCompiler(cocos.CCPlugin):
                  , os.path.join(self.simulator_output_dir,"android")),
             "&& %s" % (rename_command),
             ])
+
+        env_param = utils.ExtendEnv.get_extend_env_str()
+        if env_param and len(env_param) > 0:
+            command += (' --env "%s"' % env_param)
 
         self._run_cmd(command, self.simulator_abs_path)
         self.build_log += MultiLanguage.get_string('GEN_SIM_BUILD_SUCCESS_FMT', ('Android', self.mode))
