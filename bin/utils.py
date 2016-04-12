@@ -251,7 +251,7 @@ class ExtendEnv(object):
 
     @classmethod
     def parse_extend_env(cls, env):
-        env_list = env.split(':')
+        env_list = env.split(';')
         for item in env_list:
             index = item.find('=')
             if index > 0:
@@ -272,4 +272,4 @@ class ExtendEnv(object):
         for item in cls.extend_env:
             env_list.append("%s=%s" % (item, cls.extend_env[item]))
 
-        return ':'.join(env_list)
+        return ';'.join(env_list)
