@@ -17,7 +17,7 @@
                 "libjscocos2d", "libsimulator"
             ],
             "rename_targets" : [
-                "libSpine", "libbox2d", "libcreator",
+                "libSpine",
                 "libcocos2d", "libjscocos2d", 
                 "libsimulator"
             ]
