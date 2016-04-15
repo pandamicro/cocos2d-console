@@ -317,6 +317,7 @@ class LibsCompiler(cocos.CCPlugin):
             if self.build_ios:
                 # compile ios simulator
                 build_cmd = XCODE_CMD_FMT % (proj_path, mode_str, "%s iOS" % target, "-sdk iphonesimulator ARCHS=\"i386 x86_64\" VALID_ARCHS=\"i386 x86_64\"", ios_sim_libs_dir)
+                build_cmd += ' ONLY_ACTIVE_ARCH=NO'
                 self._run_cmd(build_cmd)
 
                 # compile ios device
