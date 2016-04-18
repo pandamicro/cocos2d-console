@@ -199,8 +199,13 @@ class MKGenerator(object):
         new_lines = []
 
         ignore_strs = [
-            "prebuilt"
+            "prebuilt",
         ]
+        ignore_modules = [
+            "android",
+            "android/cpufeatures"
+        ]
+
         for line in lines:
             trim_line = line.lstrip(" ")
             match = re.match(MKGenerator.INCLUDE_MODULE_PATTERN, trim_line)
@@ -209,6 +214,10 @@ class MKGenerator(object):
                 need_modify = True
                 for str in ignore_strs:
                     if module.find(str) >= 0:
+                        need_modify = False
+                        break
+                for im in ignore_modules:
+                    if module == im:
                         need_modify = False
                         break
 
