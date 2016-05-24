@@ -676,13 +676,27 @@ def copy_files_in_dir(src, dst):
                 os.makedirs(add_path_prefix(new_dst))
             copy_files_in_dir(path, new_dst)
 
+def replace_env_variable(the_str):
+    import re
+    env_pattern = '\${(.*)}'
+    match = re.match(env_pattern, the_str)
+    ret = the_str
+    if match:
+        env_key = match.group(1)
+        env_value = check_environment_variable(env_key)
+        ret = ret.replace('${%s}' % env_key, env_value)
+
+    return ret
 
 def copy_files_with_config(config, src_root, dst_root):
-    src_dir = config["from"]
-    dst_dir = config["to"]
+    src_dir = replace_env_variable(config["from"])
+    dst_dir = replace_env_variable(config["to"])
 
-    src_dir = os.path.join(src_root, src_dir)
-    dst_dir = os.path.join(dst_root, dst_dir)
+    if not os.path.isabs(src_dir):
+        src_dir = os.path.normpath(os.path.join(src_root, src_dir))
+
+    if not os.path.isabs(dst_dir):
+        dst_dir = os.path.normpath(os.path.join(dst_root, dst_dir))
 
     include_rules = None
     if "include" in config:
