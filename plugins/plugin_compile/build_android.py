@@ -557,7 +557,7 @@ class AndroidBuilder(object):
                 else:
                     path = os.path.realpath(os.path.dirname(__file__))
                 path = os.path.join(path, '../plugin_package/cocospackage')
-                cmd = '%s encrypt -p %s --mode %s --runincocos --runinbuild --noupdate' % (path, self._project.get_project_dir(), build_mode)
+                cmd = '%s encrypt -p %s --mode %s --runincocos --runinbuild --noupdate --env %s' % (path, self._project.get_project_dir(), build_mode, compile_obj.__class__.get_console_path())
                 self._run_cmd(cmd)
         except:
             pass
