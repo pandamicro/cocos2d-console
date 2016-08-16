@@ -35,7 +35,7 @@ class CCPluginPackage(cocos.CCPlugin):
             cmd = self._get_sdkbox_path() + ' --runincocos ' + ' '.join(argv)
             ret = self._run_cmd(cmd)
         else:
-            cmd = self._get_cocospackage_path() + ' --runincocos ' + ' '.join(argv)
+            cmd = self._get_cocospackage_path() + ' --runincocos ' + ' '.join(argv) + ' --env ' + ' '.join(self.get_console_path())
             ret = self._run_cmd(cmd)
         if 0 != ret:
             message = MultiLanguage.get_string('COCOS_ERROR_RUNNING_CMD_RET_FMT', str(ret))
