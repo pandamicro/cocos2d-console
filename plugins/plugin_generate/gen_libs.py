@@ -64,6 +64,8 @@ class LibsCompiler(cocos.CCPlugin):
         group = parser.add_argument_group(MultiLanguage.get_string('GEN_LIBS_GROUP_ANDROID'))
         group.add_argument("--app-abi", dest="app_abi",
                             help=MultiLanguage.get_string('GEN_LIBS_ARG_ABI'))
+        group.add_argument("--ap", dest="android_platform",
+                            help=MultiLanguage.get_string('COMPILE_ARG_AP'))
 
         (args, unknown) = parser.parse_known_args(argv)
         self.init(args)
@@ -130,6 +132,7 @@ class LibsCompiler(cocos.CCPlugin):
             self.app_abi = 'armeabi'
         else:
             self.app_abi = args.app_abi
+        self.android_platform = args.android_platform
 
         self.lib_dir = os.path.normpath(os.path.join(self.repo_x, self.cfg_info[LibsCompiler.KEY_LIBS_OUTPUT]))
 
@@ -363,6 +366,8 @@ class LibsCompiler(cocos.CCPlugin):
         # build the simulator project
         proj_path = os.path.join(engine_dir, 'tools/simulator')
         build_cmd = "%s compile -s %s -p android --ndk-mode %s --app-abi %s" % (cmd_path, proj_path, self.mode, self.app_abi)
+        if self.android_platform is not None:
+            build_cmd += ' --ap %s' % self.android_platform
 
         env_param = ExtendEnv.get_extend_env_str()
         if env_param and len(env_param) > 0:
