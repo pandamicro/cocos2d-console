@@ -26,7 +26,7 @@ class SimulatorCompiler(cocos.CCPlugin):
     SIMULATOR_PROJ_PATH = 'tools/simulator'
     SIMULATOR_SLN_PATH = "frameworks/runtime-src/proj.win32/simulator.sln"
     SIMULATOR_XCODE_PATH = "frameworks/runtime-src/proj.ios_mac/simulator.xcodeproj"
-    COCOS_CMD_PATH = 'tools/cocos2d-console/bin/cocos'
+    COCOS_PY_PATH = 'tools/cocos2d-console/bin/cocos.py'
 
     DEFAULT_OUTPUT_FOLDER_NAME = 'simulator'
 
@@ -81,7 +81,13 @@ class SimulatorCompiler(cocos.CCPlugin):
                                 CCPluginError.ERROR_WRONG_ARGS)
 
         self.simulator_abs_path = os.path.join(self.engine_root, SimulatorCompiler.SIMULATOR_PROJ_PATH)
-        self.cocos_bin = os.path.join(self.engine_root, SimulatorCompiler.COCOS_CMD_PATH)
+        python_path = cocos.check_environment_variable('COCOS_PYTHON_HOME', raise_error=False)
+        if python_path is None:
+            python_path = 'python'
+        else:
+            python_path = os.path.join(python_path, 'python')
+        cocos_py_path = os.path.join(self.engine_root, SimulatorCompiler.COCOS_PY_PATH)
+        self.cocos_bin = '\"%s\" \"%s\"' % (python_path, cocos_py_path)
         engine_version = utils.get_engine_version(self.engine_root)
         # get the short version after "cocos2d-x-"
         self.engine_version = engine_version[10:]

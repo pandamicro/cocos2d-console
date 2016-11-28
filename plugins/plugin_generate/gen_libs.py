@@ -358,14 +358,16 @@ class LibsCompiler(cocos.CCPlugin):
         android_out_dir = os.path.join(self.lib_dir, "android")
         engine_dir = self.repo_x
         console_dir = os.path.join(engine_dir, CONSOLE_PATH)
-        if cocos.os_is_win32():
-            cmd_path = os.path.join(console_dir, "cocos.bat")
-        else:
-            cmd_path = os.path.join(console_dir, "cocos")
+        cocos_py_path = os.path.join(console_dir, 'cocos.py')
 
         # build the simulator project
         proj_path = os.path.join(engine_dir, 'tools/simulator')
-        build_cmd = "%s compile -s %s -p android --ndk-mode %s --app-abi %s" % (cmd_path, proj_path, self.mode, self.app_abi)
+        python_path = cocos.check_environment_variable('COCOS_PYTHON_HOME', raise_error=False)
+        if python_path is None:
+            python_path = 'python'
+        else:
+            python_path = os.path.join(python_path, 'python')
+        build_cmd = "\"%s\" \"%s\" compile -s %s -p android --ndk-mode %s --app-abi %s" % (python_path, cocos_py_path, proj_path, self.mode, self.app_abi)
         if self.android_platform is not None:
             build_cmd += ' --ap %s' % self.android_platform
 

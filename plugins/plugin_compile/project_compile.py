@@ -359,6 +359,15 @@ class CCPluginCompile(cocos.CCPlugin):
                 if cur_ext == ext:
                     os.remove(full_path)
 
+    def _get_python_path(self):
+        ret = cocos.check_environment_variable('COCOS_PYTHON_HOME', raise_error=False)
+        if ret is None:
+            ret = 'python'
+        else:
+            ret = os.path.join(ret, 'python')
+
+        return ret
+
     def compile_lua_scripts(self, src_dir, dst_dir, need_compile=None):
         if not self._project._is_lua_project():
             return
@@ -369,9 +378,10 @@ class CCPluginCompile(cocos.CCPlugin):
         if not need_compile and not self._lua_encrypt:
             return
 
-        cocos_cmd_path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "cocos")
+        python_path = self._get_python_path()
+        cocos_py_path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "cocos.py")
         rm_ext = ".lua"
-        compile_cmd = "\"%s\" luacompile -s \"%s\" -d \"%s\"" % (cocos_cmd_path, src_dir, dst_dir)
+        compile_cmd = "\"%s\" \"%s\" luacompile -s \"%s\" -d \"%s\"" % (python_path, cocos_py_path, src_dir, dst_dir)
 
         if not need_compile:
             compile_cmd = "%s --disable-compile" % compile_cmd
@@ -403,9 +413,10 @@ class CCPluginCompile(cocos.CCPlugin):
         if not self._compile_script:
             return
 
-        cocos_cmd_path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "cocos")
+        python_path = self._get_python_path()
+        cocos_py_path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "cocos.py")
         rm_ext = ".js"
-        compile_cmd = "\"%s\" jscompile -s \"%s\" -d \"%s\"" % (cocos_cmd_path, src_dir, dst_dir)
+        compile_cmd = "\"%s\" \"%s\" jscompile -s \"%s\" -d \"%s\"" % (python_path, cocos_py_path, src_dir, dst_dir)
 
         env_param = utils.ExtendEnv.get_extend_env_str()
         if env_param and len(env_param) > 0:
