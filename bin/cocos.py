@@ -626,7 +626,7 @@ def _check_dependencies(classes):
 
 # common functions
 
-def check_environment_variable(var):
+def check_environment_variable(var, raise_error=True):
     ''' Checking the environment variable, if found then return it's value, else raise error
     '''
     try:
@@ -634,8 +634,11 @@ def check_environment_variable(var):
         if value is None:
             value = os.environ[var]
     except Exception:
-        raise CCPluginError(MultiLanguage.get_string('COCOS_ERROR_ENV_NOT_DEFINED_FMT', var),
-                            CCPluginError.ERROR_ENV_VAR_NOT_FOUND)
+        if raise_error:
+            raise CCPluginError(MultiLanguage.get_string('COCOS_ERROR_ENV_NOT_DEFINED_FMT', var),
+                                CCPluginError.ERROR_ENV_VAR_NOT_FOUND)
+        else:
+            value = None
 
     return value
 
