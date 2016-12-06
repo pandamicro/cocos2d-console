@@ -45,7 +45,7 @@ class CCPluginJSCompile(cocos.CCPlugin):
         self._src_dir_arr = self.normalize_path_in_list(options.src_dir_arr)
         self._dst_dir = options.dst_dir
         self._use_closure_compiler = options.use_closure_compiler
-        self._verbose = options.verbose
+        self._verbose = not options.quiet
         self._config = None
         self._workingdir = workingdir
         self._closure_params = ''
@@ -272,10 +272,10 @@ class CCPluginJSCompile(cocos.CCPlugin):
 
         parser = ArgumentParser(prog="cocos %s" % self.__class__.plugin_name(),
                                 description=self.__class__.brief_description())
-        parser.add_argument("-v", "--verbose",
-                          action="store_true",
-                          dest="verbose",
-                          help=MultiLanguage.get_string('LUACOMPILE_ARG_VERBOSE'))
+        parser.add_argument("-q", "--quiet",
+                            action="store_true",
+                            dest="quiet",
+                            help=MultiLanguage.get_string('COCOS_HELP_ARG_QUIET'))
         parser.add_argument("-s", "--src",
                           action="append", dest="src_dir_arr",
                           help=MultiLanguage.get_string('JSCOMPILE_ARG_SRC'))
