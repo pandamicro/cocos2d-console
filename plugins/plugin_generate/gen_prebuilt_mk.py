@@ -200,6 +200,7 @@ class MKGenerator(object):
 
         ignore_strs = [
             "prebuilt",
+            "sources"
         ]
         ignore_modules = [
             "android",
