@@ -25,6 +25,8 @@ import string
 import locale
 import gettext
 import json
+import utils
+import re
 from utils import ExtendEnv
 
 
@@ -313,7 +315,7 @@ class DataStatistic(object):
 
             if m is not None:
                 stat_cls = getattr(m, "Statistic")
-                cls.stat_obj = stat_cls()
+                cls.stat_obj = stat_cls(STAT_VERSION)
 
             # cocos_stat is found
             if cls.stat_obj is not None:
@@ -680,7 +682,6 @@ def copy_files_in_dir(src, dst):
             copy_files_in_dir(path, new_dst)
 
 def replace_env_variable(the_str):
-    import re
     env_pattern = '\${(.*)}'
     match = re.match(env_pattern, the_str)
     ret = the_str
@@ -766,7 +767,6 @@ def copy_files_with_rules(src_rootDir, src, dst, include=None, exclude=None):
 
 
 def _in_rules(rel_path, rules):
-    import re
     ret = False
     path_str = rel_path.replace("\\", "/")
     for rule in rules:
@@ -911,6 +911,18 @@ else:
     _ = MultiLanguage.get_string
 
 if __name__ == "__main__":
+    # Get the engine version for the DataStat
+    cur_path = get_current_path()
+    engine_path = os.path.normpath(os.path.join(cur_path, '../../../'))
+    STAT_VERSION = utils.get_engine_version(engine_path)
+    if STAT_VERSION is not None:
+        ver_pattern = r"(.*)-lite$"
+        match = re.match(ver_pattern, STAT_VERSION)
+        if match:
+            STAT_VERSION = match.group(1)
+    else:
+        STAT_VERSION = 'unknown'
+
     DataStatistic.stat_event('cocos', 'start', 'invoked')
 
     # Parse the arguments, specify the language
