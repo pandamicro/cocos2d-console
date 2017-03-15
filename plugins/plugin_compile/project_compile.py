@@ -916,48 +916,10 @@ class CCPluginCompile(cocos.CCPlugin):
 
     # Get the required VS versions from the engine version of project
     def get_required_vs_versions(self):
-        # get the engine version string
-        ret = []
-
-        # 1. get engine version from .cocos_project.json
-        engine_ver_str = self._project.get_proj_config(cocos_project.Project.KEY_ENGINE_VERSION)
-
-        # 2. engine version is not found. find from source file
-        if engine_ver_str is None:
-            engine_dir = self.get_engine_dir()
-            if engine_dir is not None:
-                engine_ver_str = utils.get_engine_version(engine_dir)
-
-        if engine_ver_str is None:
-            return ret
-
-        # get the float value of engine version
-        version_pattern = r'cocos2d-x[^0-9]*([\d]+)\.([\d]+)'
-        match = re.match(version_pattern, engine_ver_str)
-        if match:
-            major_ver = int(match.group(1))
-            minor_ver = int(match.group(2))
-        else:
-            major_ver = -1
-            minor_ver = -1
-
-        if major_ver < 0:
-            return ret
-
-        if (major_ver > 3) or (major_ver == 3 and minor_ver >= 7):
-            ret = [ 2013, 2015 ]
-        else:
-            ret = [ 2012, 2013 ]
-
-        return ret
+        return [ 2013, 2015, 2017 ]
 
     def get_min_vs_version(self):
-        if self._platforms.is_wp8_active() or self._platforms.is_wp8_1_active() or self._platforms.is_metro_active():
-            # WP8 project required VS 2013
-            return 2013
-        else:
-            # win32 project required VS 2012
-            return 2012
+        return 2013
 
     def get_available_devenv(self, required_versions, min_ver, specify_vs_ver=None):
         if required_versions is None or len(required_versions) == 0:
