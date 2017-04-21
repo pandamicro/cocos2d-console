@@ -66,6 +66,8 @@ class LibsCompiler(cocos.CCPlugin):
                             help=MultiLanguage.get_string('GEN_LIBS_ARG_ABI'))
         group.add_argument("--ap", dest="android_platform",
                             help=MultiLanguage.get_string('COMPILE_ARG_AP'))
+        group.add_argument("--android-studio", dest="use_studio", action="store_true",
+                           help=MultiLanguage.get_string('COMPILE_ARG_STUDIO'))
 
         (args, unknown) = parser.parse_known_args(argv)
         self.init(args)
@@ -133,6 +135,8 @@ class LibsCompiler(cocos.CCPlugin):
         else:
             self.app_abi = args.app_abi
         self.android_platform = args.android_platform
+        self.use_studio = args.use_studio
+
 
         self.lib_dir = os.path.normpath(os.path.join(self.repo_x, self.cfg_info[LibsCompiler.KEY_LIBS_OUTPUT]))
 
@@ -354,6 +358,8 @@ class LibsCompiler(cocos.CCPlugin):
         # build .so for android
         CONSOLE_PATH = "tools/cocos2d-console/bin"
         ANDROID_A_PATH = "frameworks/runtime-src/proj.android/obj/local"
+        if self.use_studio is not None:
+            ANDROID_A_PATH = "frameworks/runtime-src/proj.android-studio/app/obj/local"
 
         android_out_dir = os.path.join(self.lib_dir, "android")
         engine_dir = self.repo_x
@@ -370,6 +376,8 @@ class LibsCompiler(cocos.CCPlugin):
         build_cmd = "\"%s\" \"%s\" compile -s %s -p android --ndk-mode %s --app-abi %s" % (python_path, cocos_py_path, proj_path, self.mode, self.app_abi)
         if self.android_platform is not None:
             build_cmd += ' --ap %s' % self.android_platform
+        if self.use_studio is not None:
+            build_cmd += ' --android-studio'
 
         env_param = ExtendEnv.get_extend_env_str()
         if env_param and len(env_param) > 0:
