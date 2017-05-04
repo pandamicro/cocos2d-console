@@ -48,7 +48,7 @@ class AndroidBuilder(object):
         # check environment variable
         if self.use_studio:
             self.ant_root = None
-            self.sign_prop_file = os.path.join(self.app_android_root, 'app', "gradle.properties")
+            self.sign_prop_file = os.path.join(self.app_android_root, "gradle.properties")
         else:
             self.ant_root = cocos.check_environment_variable('ANT_ROOT')
             self.sign_prop_file = os.path.join(self.app_android_root, "ant.properties")
