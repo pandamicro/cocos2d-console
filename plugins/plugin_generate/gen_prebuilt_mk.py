@@ -288,7 +288,11 @@ class MKGenerator(object):
         lib_file_name = self.get_lib_file_name(module_lines)
         if lib_file_name is None:
             raise Exception("The mk file %s not specify module name." % self.src_mk_path)
+        
+        # .mk file can not use '\' as the path seperator
+        relative_path = relative_path.replace('\\', '/');    
         relative_path = "%s/$(TARGET_ARCH_ABI)/%s" % (relative_path, lib_file_name)
+
         dst_lines = self.modidy_src_file(module_lines, relative_path)
 
         # remove the LOCAL_C_INCLUDES & LOCAL_LDLIBS
