@@ -19,7 +19,7 @@
             "rename_targets" : [
                 "libSpine", "libDragonBones",
                 "libcocos2d", "libjscocos2d", 
-                "libsimulator"
+                "libsimulator", "libBox2D"
             ]
         }
     },
