@@ -285,9 +285,6 @@ class SimulatorCompiler(cocos.CCPlugin):
         if not os.path.isdir(win32_output_dir):
             os.makedirs(win32_output_dir)
 
-        lang_file_path = os.path.join(self.simulator_abs_path, "frameworks/runtime-src/Classes/ide-support/lang")
-        lang_copy_command = "xcopy /Y %s %s" % (self.convert_path_to_win32(lang_file_path), win32_output_dir)
-
         # get the vs version should be used
         if self.vs_version is None:
             ver_param = ''
