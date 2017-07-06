@@ -304,7 +304,6 @@ class SimulatorCompiler(cocos.CCPlugin):
                 cocos_cmd,
                 " && xcopy /Y %s*.dll %s" % (win32_src_dir, win32_output_dir),
                 " && xcopy /Y %s*.exe %s" % (win32_src_dir, win32_output_dir),
-                " && %s" % (lang_copy_command),
                 " && if exist %s*.dll xcopy /Y %s*.dll %s" % (win32_dll_dir,win32_dll_dir,win32_output_dir)
             ])
         else:
@@ -312,8 +311,7 @@ class SimulatorCompiler(cocos.CCPlugin):
             if env_param and len(env_param) > 0:
                 cocos_cmd += (' --env "%s"' % env_param)
             command = ' '.join([
-                cocos_cmd,
-                " && %s" % (lang_copy_command),
+                cocos_cmd
                 ])
 
         self._run_cmd(command, self.simulator_abs_path)
